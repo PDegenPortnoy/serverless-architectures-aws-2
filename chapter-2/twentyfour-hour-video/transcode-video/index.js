@@ -7,8 +7,8 @@
 
 'use strict';
 
-const AWS = require('aws-sdk');
-const mediaConvert = new AWS.MediaConvert({
+const { MediaConvertClient, CreateJobCommand } = require("@aws-sdk/client-mediaconvert");
+const mediaConvert = new MediaConvertClient({
     endpoint: process.env.MEDIA_ENDPOINT                
 });
 
@@ -61,7 +61,7 @@ exports.handler = async (event, context) => {
             }
         };
 
-        const mediaConvertResult = await mediaConvert.createJob(job).promise();           
+	const mediaConvertResult = await mediaConvert.send(new CreateJobCommand(job));
         console.log(mediaConvertResult);
 
     } catch (error) {
